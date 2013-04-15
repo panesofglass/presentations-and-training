@@ -5,10 +5,10 @@ namespace SOLID.SampleApp
 {
     public class EmailSender : IEmailSender
     {
-
-        // 
-        public void SendEmail(string messageBody)
+        public void SendEmail(IMessageInfoRetriever messageInfoRetriever)
         {
+            string messageBody = messageInfoRetriever.GetMessageBody();
+
             SmtpClient client = new SmtpClient("some.mail.server.example.com");
             client.Credentials = new NetworkCredential("someuser", "somepassword");
             MailAddress from = new MailAddress("me@myserver.com");

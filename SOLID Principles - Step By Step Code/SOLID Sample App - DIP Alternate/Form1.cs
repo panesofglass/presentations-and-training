@@ -6,13 +6,14 @@ namespace SOLID.SampleApp
 
     public partial class Form1 : Form
     {
-        //private IEmailSender _emailSender;
+    
         private string _fileName;
+        private IEmailSender _emailSender;
 
         public Form1()
         {
             InitializeComponent();
-            //_emailSender = new EmailSender();
+            _emailSender = new EmailSender();
         }
 
         private void Send_Click(object sender, EventArgs e)
@@ -25,11 +26,9 @@ namespace SOLID.SampleApp
                 fileReaderService.RegisterFormatReader(new XmlFormatReader());
                 fileReaderService.RegisterDefaultFormatReader(new FlatFileFormatReader());
 
-                ProcessingService processingService = new ProcessingService(new EmailSender(), fileReaderService);
-                string messageSendingStatus = processingService.SendMessage();
-                //string messageSendingStatus = _emailSender.SendMessage(fileReaderService);
+                _emailSender.SendEmail(fileReaderService);
 
-                Output.Text = messageSendingStatus;
+                Output.Text = "Sent using file reader service.";
             }
             catch (Exception ex)
             {
@@ -45,11 +44,9 @@ namespace SOLID.SampleApp
             
                 IMessageInfoRetriever databaseReaderService = new DatabaseReaderService("server=foo; database=bar;");
 
-                ProcessingService processingService = new ProcessingService(new EmailSender(), databaseReaderService);
-                string messageSendingStatus = processingService.SendMessage();
-                //string messageSendingStatus = _emailSender.SendMessage(databaseReaderService);
+                _emailSender.SendEmail(databaseReaderService);
 
-                Output.Text = messageSendingStatus;
+                Output.Text = "Sent using database reader service";
             }
             catch (Exception ex)
             {
